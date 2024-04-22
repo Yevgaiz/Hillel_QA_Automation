@@ -2,7 +2,7 @@ min_width = int(input('Enter minimal width: '))
 max_width = int(input('Enter maximal width: '))
 
 if min_width > max_width:
-    print("Warning: Minimum width is greater than maximum width.")
+    print("Minimum width is greater than maximum width.")
     exit()
 
 if (max_width - min_width) % 2 != 0:
