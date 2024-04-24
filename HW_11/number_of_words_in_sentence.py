@@ -1,5 +1,5 @@
 sentences = input(str("Enter the sentences: ")).strip()
-print(len(sentences))
+
 words_number = []
 current_count = 0
 
