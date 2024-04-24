@@ -1,14 +1,19 @@
 emails = [
-    "johnsnow@example.com",
-    "email123@test.com",
-    "someone@example.co.uk",  # '.' twice
-    "alice.bob@example",  # '.' before '@'
-    "john.doe@example",  # Missing top-level domain
-    "john.doeexample.com",  # Missing '@'
-    "john@doe@example.com",  # Multiple '@'
-    "@example.com",  # Starts with '@'
-    "john.doe@example.",  # Ends with '.'
-]
+    'example@email.com',
+    'username@example.com',
+    'johndoe123@example.org',
+    'example.com',
+    'user@examplecom',
+    '@example.org',
+    'john.doe@example.com',
+    'info@company.co.uk',
+    'user_name123@example.org',
+    'john.doe@examplecom',
+    'user@example.co.uk',
+    'example.org@user',
+    'john.doe@example.com',
+    'user123@example.co.uk',
+  ]
 
 for email in emails:
     if ('@' not in email or '.' not in email or email.index('.') < email.index('@')
