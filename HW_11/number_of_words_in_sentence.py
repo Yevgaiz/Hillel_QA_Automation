@@ -29,6 +29,10 @@ sentence_words = []
 
 for sentence in sentence_list:
     words = sentence.split()
-    sentence_words.append(len(words))
+    len_words = len(words)
+    if len_words != 0:
+        sentence_words.append(len_words)
 
 print(sentence_words)
+
+
