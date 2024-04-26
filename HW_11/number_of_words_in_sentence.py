@@ -17,10 +17,10 @@ if current_count > 0:
 
 # if len(words_number) == 0 and len(sentences) != 0:
 #     words_number = [1]
+print(words_number)
 
 
 # Variant №2
-print(words_number)
 
 sentence_list = sentences.split(".")
 sentence_list.pop()
