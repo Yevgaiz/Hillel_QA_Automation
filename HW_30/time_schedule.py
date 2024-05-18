@@ -13,6 +13,6 @@ def next_class_date(current_date):
 current_date = start_date
 lecture_number = 1
 while lecture_number <= 32:
-    print(f"Lecture {lecture_number}: {current_date.strftime('%d %b %Y %H:%M')}")
+    print(f"Lecture {lecture_number: >2}: {current_date.strftime('%d %b %Y %H:%M')}")
     current_date = next_class_date(current_date + timedelta(days=1))
     lecture_number += 1
