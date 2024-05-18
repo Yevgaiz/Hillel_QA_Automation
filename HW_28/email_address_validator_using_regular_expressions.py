@@ -2,13 +2,9 @@ import re
 
 
 def validate_email(email):
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    match = re.match(pattern, email)
+    pattern = r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$'
+    return bool(re.match(pattern, email))
 
-    if match:
-        if email.count('@') == 1 and email.count('.') == 1:
-            return True
-    return False
 
 emails = [
     'example@email.com',
