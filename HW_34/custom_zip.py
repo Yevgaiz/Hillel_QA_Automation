@@ -1,16 +1,19 @@
 from typing import List
 
 
-def custom_zip(*args, full=True, default=None) -> List[List]:
+def custom_zip(*args, full=False, default=None) -> List[List]:
+    zipped_lists = []
     if full:
         max_length = max(len(lst) for lst in args)
-        zipped_lists = []
         for i in range(max_length):
             elements_in_tuple = [lst[i] if i < len(lst) else default for lst in args]
             zipped_lists.append(tuple(elements_in_tuple))
-        return zipped_lists
     else:
-        list(zip(*args))
+        min_length = min(len(lst) for lst in args)
+        for i in range(min_length):
+            elements_in_tuple = [lst[i] for lst in args]
+            zipped_lists.append(tuple(elements_in_tuple))
+    return zipped_lists
 
 
 seq1 = [1, 2, 3, 4, 5]
