@@ -1,9 +1,8 @@
 from datetime import date, timedelta
+from abc import ABC
 
-""" Абстрактный класс Person """
 
-
-class Person:
+class Person(ABC):
     def __init__(self, person_id, name, surname):
         self._person_id = person_id
         self._name = name
@@ -22,30 +21,27 @@ class Person:
         raise NotImplementedError("Subclasses should implement this!")
 
 
-""" Класс наследующий от Person """
-
-
 class Instructor(Person):
     def __init__(self, person_id, name, surname, years_of_experience):
         super().__init__(person_id, name, surname)
         self.years_of_experience = years_of_experience
 
+    def get_full_name(self):
+        return f"{self._name} {self._surname}"
+
     def display_info(self):
         return f"Name: {self._name}, Surname: {self._surname}, ID: {self._person_id}, Experience: {self.years_of_experience} years"
-
-
-""" Класс наследующий от Person """
 
 
 class Student(Person):
     def __init__(self, person_id, name, surname):
         super().__init__(person_id, name, surname)
 
+    def get_full_name(self):
+        return f"{self._name} {self._surname}"
+
     def display_info(self):
         return f"Name: {self._name}, Surname: {self._surname}, ID: {self._person_id}"
-
-
-"""Ассоциация с CourseAssignment и Instructor"""
 
 
 class Course:
@@ -54,6 +50,7 @@ class Course:
         self.title = title
         self.duration = duration
         self.description = description
+        self._groups = []
 
     def get_course_code(self):
         return self._course_code
@@ -67,18 +64,24 @@ class Course:
     def get_duration(self):
         return self.duration
 
+    def add_group(self, it_course):
+        self._groups.append(it_course)
+
+    def get_num_groups(self):
+        return f"Number of groups: {len(self._groups)}"
+
     def display_info(self):
-        return f"Course [Code: {self._course_code}, Title: {self.title}, Description: {self.description}, Duration: {self.duration} weeks]"
-
-
-"""Класс ITCourse, агрегирующий Course"""
+        return f"Course Code: {self._course_code}, Title: {self.title}, Description: {self.description}, Duration: {self.duration} weeks"
 
 
 class ITCourse:
-    def __init__(self, course):
+    def __init__(self, course, assignment_date):
         self._course = course
         self._students = []
         self._instructor = None
+        self.assignment_date = assignment_date
+        self.end_date = assignment_date + timedelta(weeks=course.duration)
+        self._course.add_group(self)
 
     def assign_instructor(self, instructor):
         self._instructor = instructor
@@ -97,12 +100,11 @@ class ITCourse:
         return self._students
 
     def display_info(self):
-        instructor_info = self._instructor.display_info() if self._instructor else "No instructor assigned"
-        students_info = [student.display_info() for student in self._students]
-        return f"ITCourse [{self._course.display_info()}]\nInstructor: {instructor_info}\nStudents: {', '.join(students_info)}"
-
-
-"""Класс Grade, зависимый от Student и Course"""
+        instructor_info = self._instructor.get_full_name() if self._instructor else "No instructor assigned"
+        students_info = [student.get_full_name() for student in self._students]
+        return (
+            f"ITCourse: [{self._course.display_info()} Instructor: {instructor_info}\nStudents: {', '.join(students_info)}\n"
+            f"Assignment Date: {self.assignment_date}, End date: {self.end_date}]")
 
 
 class Grade:
@@ -129,27 +131,9 @@ class Grade:
                 f"Course: {self._course.get_title()}, Score: {self._score}, Date Assigned: {self._date_assigned}]")
 
 
-"""Ассоциация с Course и Instructor"""
-
-
-class CourseAssignment:
-    def __init__(self, assignment_id, course, instructor, assignment_date):
-        self._assignment_id = assignment_id
-        self._course = course
-        self._instructor = instructor
-        self._assignment_date = assignment_date
-        self._duration = course.get_duration()
-        self._end_date = assignment_date + timedelta(weeks=self._duration)
-
-    def display_info(self):
-        return (
-            f"CourseAssignment [ID: {self._assignment_id}, Course: {self._course.get_title()}, Instructor: {self._instructor.get_name()} {self._instructor.get_surname()}, "
-            f"Assignment Date: {self._assignment_date}, End date: {self._end_date}]")
-
-
+# Test the implementation
 course1 = Course("QA123", "QA Automation Python", "Опануй автоматизоване тестування на Python!", 16)
-
-it_course1 = ITCourse(course1)
+it_course1 = ITCourse(course1, date(2024, 4, 11))
 
 instructor1 = Instructor(12345, "Oleksii", "Lytvynov", 15)
 student1 = Student(223421, "Kostiantyn", "Pshenyshniuk")
@@ -159,15 +143,12 @@ student4 = Student(321236, "Taras", "Andrusiv")
 student5 = Student(321237, "Darla", "Veresha")
 
 it_course1.assign_instructor(instructor1)
-
 it_course1.add_students(student1, student2, student3, student4, student5)
-
-assignment1 = CourseAssignment(1, course1, instructor1, date(2024, 4, 11))
 
 grade = Grade(student1, course1, 95, date.today())
 grade1 = Grade(student2, course1, 96, date.today())
 
 print(it_course1.display_info())
-print(assignment1.display_info())
 print(grade.display_info())
 print(grade1.display_info())
+print(course1.get_num_groups())
