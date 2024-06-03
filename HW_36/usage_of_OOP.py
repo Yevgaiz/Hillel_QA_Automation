@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class Person(ABC):
@@ -17,6 +17,10 @@ class Person(ABC):
     def get_surname(self):
         return self._surname
 
+    def get_full_name(self):
+        return f"{self._name} {self._surname}"
+
+    @abstractmethod
     def display_info(self):
         raise NotImplementedError("Subclasses should implement this!")
 
@@ -26,9 +30,6 @@ class Instructor(Person):
         super().__init__(person_id, name, surname)
         self.years_of_experience = years_of_experience
 
-    def get_full_name(self):
-        return f"{self._name} {self._surname}"
-
     def display_info(self):
         return f"Name: {self._name}, Surname: {self._surname}, ID: {self._person_id}, Experience: {self.years_of_experience} years"
 
@@ -36,9 +37,6 @@ class Instructor(Person):
 class Student(Person):
     def __init__(self, person_id, name, surname):
         super().__init__(person_id, name, surname)
-
-    def get_full_name(self):
-        return f"{self._name} {self._surname}"
 
     def display_info(self):
         return f"Name: {self._name}, Surname: {self._surname}, ID: {self._person_id}"
@@ -131,7 +129,6 @@ class Grade:
                 f"Course: {self._course.get_title()}, Score: {self._score}, Date Assigned: {self._date_assigned}]")
 
 
-# Test the implementation
 course1 = Course("QA123", "QA Automation Python", "Опануй автоматизоване тестування на Python!", 16)
 it_course1 = ITCourse(course1, date(2024, 4, 11))
 
