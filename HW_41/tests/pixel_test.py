@@ -18,12 +18,6 @@ class TestPixel:
         assert p.green == green
         assert p.blue == blue
 
-        with pytest.raises(ValueError):
-            Pixel(256, 0, 0)
-
-        with pytest.raises(ValueError):
-            Pixel(-1, 0, 0)
-
     @pytest.mark.parametrize("red,green,blue", [
         (256, 0, 0),
         (-1, 0, 0),
@@ -89,7 +83,8 @@ class TestPixel:
 
     @pytest.mark.parametrize("pixel, divisor, expected", [
         (Pixel(50, 100, 150), 2, Pixel(25, 50, 75)),
-        (Pixel(30, 60, 90), 3, Pixel(10, 20, 30))
+        (Pixel(30, 60, 90), 3, Pixel(10, 20, 30)),
+        (Pixel(25, 35, 155), 2, Pixel(12.5, 17.5, 77.5)),
     ])
     def test_pixel_division(self, pixel, divisor, expected):
         result = pixel / divisor
