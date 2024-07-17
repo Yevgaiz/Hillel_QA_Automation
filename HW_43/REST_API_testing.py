@@ -29,12 +29,11 @@ def create_user():
     print(f"User deleted: {user}")
 
 
-@pytest.fixture
-def create_post(create_user):
+def create_post(user_id):
     post_data = {
         "title": "Test Title",
         "body": "Body of the test post",
-        "user_id": create_user['id']
+        "user_id": user_id
     }
 
     response = requests.post(f"{url}/posts", headers=headers, json=post_data)
@@ -44,10 +43,12 @@ def create_post(create_user):
     return post
 
 
-def test_create_post(create_user, create_post):
-    assert create_post['title'] == "Test Title"
-    assert create_post['body'] == "Body of the test post"
-    assert create_post['user_id'] == create_user['id']
+def test_create_post(create_user):
+    post = create_post(create_user['id'])
+
+    assert post['title'] == "Test Title"
+    assert post['body'] == "Body of the test post"
+    assert post['user_id'] == create_user['id']
 
 
 if __name__ == "__main__":
